@@ -1,4 +1,5 @@
-const main = `<!DOCTYPE html>
+function buildPage(data){
+return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -36,6 +37,7 @@ const main = `<!DOCTYPE html>
     </style>
 </head>
 <body>
-    ${someVariable}
+    ${data}
 </body>
 </html>`
+}
