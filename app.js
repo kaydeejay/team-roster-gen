@@ -3,6 +3,10 @@ const inquirer = require('inquirer');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
+const managerHTML = require('./templates/manager');
+const engineerHTML = require('./templates/engineer');
+const internHTML = require('./templates/intern');
+const rosterHTML = require('./templates/main');
 
 function startLoop(){
   const team = [];
@@ -119,8 +123,26 @@ function assignRole(employee){
 }
 
 function generateHTML(arr){
-  console.log('the generateHTML function has been invoked.');
-  console.log(arr[0].name);
+  let htmlStr = "";
+  arr.forEach(el => {
+    const role = el.getRole();
+    switch(role){
+      case 'Manager':
+        htmlStr += managerHTML(el);
+        break;
+      case 'Engineer':
+        htmlStr += engineerHTML(el);
+        break;
+      case 'Intern':
+        htmlStr += internHTML(el);
+        break;
+    }
+  });
+  const data = rosterHTML(htmlStr);
+  fs.writeFile('roster.html', data, (err) => {
+    if (err) throw err;
+    else console.log('page written successfully');
+  });
 }
 
 startLoop();
