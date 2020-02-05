@@ -5,18 +5,7 @@ const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const team = [];
 
-// main function
-  // declares empty team array variable
-  // calls function to determine whether or not to add another team member
-    // if yes, obtains role, name, id, email
-    // if no, calls function to build html page with the team array
-  // depending on role from previous function, obtains unique attribute and
-    // adds it to the employee object.
-  // push employee to team
-  // Repeats the cycle
-
 function buildTeam(){
-  // const team = [];
   addMore()
   .then(addMoreResponse => emplDetails(addMoreResponse))
   .then(emplDetailsResponse => assignRole(emplDetailsResponse))
@@ -126,13 +115,9 @@ function assignRole(employee){
   });
 }
 
-
-// for now, don't code below this line. I want the generateHTML function to 
-// be the last thing before buildTeam()
-
 function generateHTML(arr){
   console.log('the generateHTML function has been invoked.');
-  console.log(arr);
+  console.log(arr[0].name);
 }
 
 buildTeam();
