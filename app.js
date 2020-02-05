@@ -18,13 +18,7 @@ function startLoop(){
       team.push(assignRoleResponse);
       buildTeam();
     })
-    .catch(err => {
-      if (err === 'Team Complete'){
-        generateHTML(team);
-      } else {
-        console.log(err);
-      }
-    });
+    .catch(err => err === 'Team Complete' ? generateHTML(team) : console.log(err));
   }
   buildTeam();
 }

@@ -14,6 +14,7 @@ return `<!DOCTYPE html>
             padding: 0;
         }
         .card {
+            float: left;
             width: 20%;
             border: 2px solid #4aaaa5;
             border-radius: 10%;
