@@ -1,9 +1,9 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
-const Employee = require('./lib/Employee');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
+const team = [];
 
 // main function
   // declares empty team array variable
@@ -16,13 +16,17 @@ const Intern = require('./lib/Intern');
   // Repeats the cycle
 
 function buildTeam(){
-  const team = [];
+  // const team = [];
   addMore()
   .then(addMoreResponse => emplDetails(addMoreResponse))
-  .then(emplDetailsResponse => testFunction(emplDetailsResponse))
+  .then(emplDetailsResponse => assignRole(emplDetailsResponse))
+  .then(assignRoleResponse => {
+    team.push(assignRoleResponse);
+    buildTeam();
+  })
   .catch(err => {
     if (err === 'Team Complete'){
-      generateHTML();
+      generateHTML(team);
     } else {
       console.log(err);
     }
@@ -75,14 +79,60 @@ function emplDetails(bool){
   });
 }
 
-function testFunction(obj){
-  console.log(obj);
+function assignRole(employee){
+  return new Promise(res => {
+    const role = employee.employeeRole;
+    switch (role){
+        case 'Manager':
+          inquirer
+          .prompt({
+            type: 'input',
+            message: 'Employee\'s Office Number:',
+            name: 'employeePhone'
+          }).then(function(response){
+            employee.employeePhone = response.employeePhone;
+            const newManager = new Manager(employee.employeeName, employee.employeeID,
+              employee.employeeEmail, employee.employeePhone);
+            res(newManager);
+          });
+          break;
+        case 'Engineer':
+          inquirer
+          .prompt({
+            type: 'input',
+            message: 'Employee\'s Github Username:',
+            name: 'employeeGithub'
+          }).then(function(response){
+            employee.employeeGithub = response.employeeGithub;
+            const newEngineer = new Engineer(employee.employeeName, employee.employeeID,
+              employee.employeeEmail, employee.employeeGithub);
+            res(newEngineer);
+          });
+          break;
+        case 'Intern':
+          inquirer
+          .prompt({
+            type: 'input',
+            message: 'Employee\'s School:',
+            name: 'employeeSchool'
+          }).then(function(response){
+            employee.employeeSchool = response.employeeSchool;
+            const newIntern = new Intern(employee.employeeName, employee.employeeID,
+              employee.employeeEmail, employee.employeeSchool);
+            res(newIntern);
+          });
+          break;
+      }
+  });
 }
 
 
 // for now, don't code below this line. I want the generateHTML function to 
 // be the last thing before buildTeam()
 
-
+function generateHTML(arr){
+  console.log('the generateHTML function has been invoked.');
+  console.log(arr);
+}
 
 buildTeam();
