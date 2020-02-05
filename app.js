@@ -3,23 +3,26 @@ const inquirer = require('inquirer');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
-const team = [];
 
-function buildTeam(){
-  addMore()
-  .then(addMoreResponse => emplDetails(addMoreResponse))
-  .then(emplDetailsResponse => assignRole(emplDetailsResponse))
-  .then(assignRoleResponse => {
-    team.push(assignRoleResponse);
-    buildTeam();
-  })
-  .catch(err => {
-    if (err === 'Team Complete'){
-      generateHTML(team);
-    } else {
-      console.log(err);
-    }
-  });
+function startLoop(){
+  const team = [];
+  function buildTeam(){
+    addMore()
+    .then(addMoreResponse => emplDetails(addMoreResponse))
+    .then(emplDetailsResponse => assignRole(emplDetailsResponse))
+    .then(assignRoleResponse => {
+      team.push(assignRoleResponse);
+      buildTeam();
+    })
+    .catch(err => {
+      if (err === 'Team Complete'){
+        generateHTML(team);
+      } else {
+        console.log(err);
+      }
+    });
+  }
+  buildTeam();
 }
 
 function addMore(){
@@ -120,4 +123,4 @@ function generateHTML(arr){
   console.log(arr[0].name);
 }
 
-buildTeam();
+startLoop();
